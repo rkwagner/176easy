@@ -18,13 +18,12 @@ struct results{
   int kWh[10][7];
 };
 
-int main(void){
-  ifstream infile;
-  infile.open("windfarm.dat");
-  int i,j,terminal,kWh;
-  string day;
+results buildResults(int i, int j){
   results res={{1000,1001,1002,1003,1004,1005,1006,1007,1008,1009},
   {"Mon","Tue","Wed","Thu","Fri","Sat","Sun"},0};
+  int terminal,kWh;
+  string day;
+  ifstream infile("windfarm.dat");
   while(infile>>terminal>>day>>kWh){
     for(i=0;i<sizeof(res.terminal)/sizeof(res.terminal[0]);i++){
       for(j=0;j<sizeof(res.day)/sizeof(res.day[0]);j++){
@@ -34,6 +33,11 @@ int main(void){
       }
     }
   }
+  infile.close();
+  return res;
+}
+
+void printChart(results res,int i, int j){
   for(i=0;i<7;i++){
     cout<<"\t"<<res.day[i];
   }
@@ -45,6 +49,11 @@ int main(void){
     }
     cout<<endl;
   }
-  infile.close();
+}
+
+int main(void){
+  int i,j;
+  results res = buildResults(i, j);
+  printChart(res, i, j);
   return 0;
 }
